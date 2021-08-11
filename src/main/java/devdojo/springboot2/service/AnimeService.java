@@ -1,6 +1,7 @@
 package devdojo.springboot2.service;
 
 import devdojo.springboot2.domain.Anime;
+import devdojo.springboot2.mapper.AnimeMapper;
 import devdojo.springboot2.repository.AnimeRepository;
 import devdojo.springboot2.DTO.AnimePostRequestDTO;
 import devdojo.springboot2.DTO.AnimePutRequestDTO;
@@ -22,15 +23,13 @@ public class AnimeService  {
         return animeRepository.findAll();
     }
 
-
-    public Anime findByIdOrThrowBadRequestException(long id){ //procurar anime pelo id
-        return
-                animeRepository.findById(id)
+    public Anime findByIdOrThrowBadRequestException(long id){ //procurar anime pelo id ou retornar erro caso nao encontrados
+        return animeRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Anime ID not found"));
     }
 
     public Anime save(AnimePostRequestDTO animePostRequestDTO){
-        return animeRepository.save( Anime.builder().name(animePostRequestDTO.getName()).build());
+        return animeRepository.save( AnimeMapper.INSTANCE.toAnime(animePostRequestDTO));
     }
 
     public void delete(long id) {
@@ -38,11 +37,9 @@ public class AnimeService  {
     }
 
     public void replace(AnimePutRequestDTO animePutRequestDTO) {
-     Anime savedAnime = findByIdOrThrowBadRequestException(animePutRequestDTO.getId());
-      Anime anime =   Anime.builder()
-                .id(savedAnime.getId())
-                .name(animePutRequestDTO.getName())
-        .build();
+        Anime savedAnime = findByIdOrThrowBadRequestException(animePutRequestDTO.getId()); //retorna erro caso nao ache um anime com o id passado
+       Anime anime =  AnimeMapper.INSTANCE.toAnime(animePutRequestDTO);
+        anime.setId(savedAnime.getId());
         animeRepository.save(anime);
     }
 }
