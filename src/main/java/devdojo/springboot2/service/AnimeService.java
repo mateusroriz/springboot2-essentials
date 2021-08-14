@@ -9,6 +9,7 @@ import devdojo.springboot2.DTO.AnimePutRequestDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -33,6 +34,7 @@ public class AnimeService  {
                 .orElseThrow(() -> new BadRequestException("Anime ID not found"));
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public Anime save(AnimePostRequestDTO animePostRequestDTO){
         return animeRepository.save( AnimeMapper.INSTANCE.toAnime(animePostRequestDTO));
     }
