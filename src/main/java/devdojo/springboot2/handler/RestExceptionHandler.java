@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(BadRequestException.class) //se a requisição for do tipo
-    public ResponseEntity<BadRequestExceptionDetails> handlerBadReqeustException(BadRequestException badRequestException){
+    public ResponseEntity<BadRequestExceptionDetails> handleBadRequestException(BadRequestException badRequestException){
         return new ResponseEntity<>(
                 BadRequestExceptionDetails.builder()
                         .timeStamp(LocalDateTime.now())
