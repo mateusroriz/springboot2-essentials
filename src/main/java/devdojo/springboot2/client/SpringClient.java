@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 @Log4j2
-public class SpringClient {
+public class SpringClient { //fazendo requisicoes para outros servicos/ urls externas
     public static void main(String[] args) {
         ResponseEntity<Anime> entity = new RestTemplate().getForEntity("http://localhost:8080/animes/{id}", Anime.class,4);
         log.info(entity);
