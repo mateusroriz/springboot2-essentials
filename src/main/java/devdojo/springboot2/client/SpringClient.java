@@ -33,6 +33,18 @@ public class SpringClient { //fazendo requisicoes para outros servicos/ urls ext
         ResponseEntity<Anime> afroSamuraiSaved = new RestTemplate().exchange("http://localhost:8080/animes/",
                 HttpMethod.POST,new HttpEntity<>(afroSamurai, createJsonHeader()), Anime.class);
         log.info("saved anime{}", afroSamuraiSaved);
+
+
+        Anime animeUpdated = afroSamuraiSaved.getBody();
+        animeUpdated.setName("Afro samurai 2");
+        ResponseEntity<Void> afroSamuraiUpdated = new RestTemplate().exchange("http://localhost:8080/animes/",
+                HttpMethod.PUT,new HttpEntity<>(animeUpdated, createJsonHeader()), Void.class);
+        log.info( afroSamuraiUpdated);
+
+        ResponseEntity<Void> afroSamuraiDeleted = new RestTemplate().exchange("http://localhost:8080/animes/{id}",
+                HttpMethod.DELETE,null, Void.class,animeUpdated.getId());
+        log.info( afroSamuraiDeleted);
+
     }
 
     private static HttpHeaders createJsonHeader(){
@@ -40,5 +52,7 @@ public class SpringClient { //fazendo requisicoes para outros servicos/ urls ext
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         return httpHeaders;
     }
+
+
 
 }
