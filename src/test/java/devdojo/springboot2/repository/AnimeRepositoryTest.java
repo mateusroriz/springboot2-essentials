@@ -8,6 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import util.AnimeCreator;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintViolationException;
@@ -25,7 +26,7 @@ class AnimeRepositoryTest {
     @Test
     @DisplayName("save Persists anime when Sucessful")
     void save_PersistAnime_WhenSucessful(){
-        Anime animeToBeSaved = createAnime();
+        Anime animeToBeSaved = AnimeCreator.createAnimeToBeSaved();
         Anime animeSaved = this.animeRepository.save(animeToBeSaved);
         Assertions.assertThat(animeSaved).isNotNull();
         Assertions.assertThat(animeSaved.getId()).isNotNull();
@@ -36,7 +37,7 @@ class AnimeRepositoryTest {
     @Test
     @DisplayName("save updates anime when Sucessful")
     void save_UpdatesAnime_WhenSucessful(){
-        Anime animeToBeSaved = createAnime();
+        Anime animeToBeSaved = AnimeCreator.createAnimeToBeSaved();
         Anime animeSaved = this.animeRepository.save(animeToBeSaved);
 
         animeSaved.setName("Konosuba");
@@ -51,7 +52,7 @@ class AnimeRepositoryTest {
     @Test
     @DisplayName("delete anime when Sucessful")
     void delete_RemovesAnime_WhenSucessful(){
-        Anime animeToBeSaved = createAnime();
+        Anime animeToBeSaved = AnimeCreator.createAnimeToBeSaved();
 
         Anime animeSaved = this.animeRepository.save(animeToBeSaved);
 
@@ -65,7 +66,7 @@ class AnimeRepositoryTest {
     @Test
     @DisplayName("find by name returns list of anime  when Sucessful")
     void findByName_ReturnsListOfAnime_WhenSucessful(){
-        Anime animeToBeSaved = createAnime();
+        Anime animeToBeSaved = AnimeCreator.createAnimeToBeSaved();
 
         Anime animeSaved = this.animeRepository.save(animeToBeSaved);
 
@@ -102,8 +103,5 @@ class AnimeRepositoryTest {
     }
 
 
-    private Anime createAnime(){
-        return Anime.builder().name("Initial D")
-                .build();
-    }
+
 }
