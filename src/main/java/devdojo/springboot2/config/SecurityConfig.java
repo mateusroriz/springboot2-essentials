@@ -1,5 +1,7 @@
 package devdojo.springboot2.config;
 
+import devdojo.springboot2.service.DevUserDetailsService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -14,7 +16,9 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 @EnableWebSecurity
 @Log4j2
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    private final DevUserDetailsService devUserDetailsService;
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
@@ -31,15 +35,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        log.info("Password encoded{}", passwordEncoder.encode("test"));
+        log.info("Password encoded{}", passwordEncoder.encode("academy"));
 
         auth.inMemoryAuthentication()
                 .withUser("anon")
                 .password( passwordEncoder.encode("academy"))
                 .roles("USER", "ADMIN")
                 .and()
-                .withUser("peixe")
+                .withUser("notpeixe")
                 .password( passwordEncoder.encode("academy"))
                 .roles("USER");
+
+        auth.userDetailsService(devUserDetailsService)
+                .passwordEncoder(passwordEncoder);
     }
 }
