@@ -28,7 +28,7 @@ public class DevUser implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty(message = "the name cannot be empty")
+    @NotEmpty(message = "the users's name cannot be empty")
     private String name;
 
     private String username;
