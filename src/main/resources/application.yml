@@ -16,3 +16,15 @@ logging:
     org:
       hibernate:
         SQL: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info, health, metrics
+          # "*" para liberar todos
+
+
+info:
+  app: Spring Boot 2 Essentials by peixe
+  github: https://github.com/mateusroriz
